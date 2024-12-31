@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Blog.scss";
+import DOMPurify from "dompurify";
 import axios from "axios";
 import { useLocation, useSearchParams } from "react-router-dom";
 const Addblog = () => {
@@ -10,6 +11,27 @@ const Addblog = () => {
     description: "",
   });
   const [imageData, setDataImage] = useState(null);
+  const sanitizeConfig = {
+    ALLOWED_TAGS: [
+      "b",
+      "i",
+      "em",
+      "strong",
+      "a",
+      "img",
+      "p",
+      "ul",
+      "li",
+      "ol",
+      "br",
+      "iframe"
+    ],
+    ALLOWED_ATTR: ["href", "src", "alt", "title", "target", "style"],
+  };
+  const sanitizedDescription = DOMPurify.sanitize(
+    blogForm.description,
+    sanitizeConfig
+  );
 
   const getBlogById = async (id) => {
     try {
@@ -77,8 +99,6 @@ const Addblog = () => {
       setDataImage(null);
       window.reload();
       alert("blog has been added");
-
-       
     } catch (err) {
       console.log(err);
     }
@@ -137,11 +157,20 @@ const Addblog = () => {
               />
             </div>
             <div class="form_row">
+              <label>Preview:</label>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: sanitizedDescription,
+                }}
+              />
+            </div>
+            <div class="form_row">
               <input className="btn" type="submit" />
             </div>
           </form>
         </div>
       </div>
+
     </>
   );
 };
