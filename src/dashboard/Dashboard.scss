@@ -1,0 +1,28 @@
+.dashboard{
+    width: calc(100% - 300px);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-left: 300px;
+
+    .box{
+        width: 300px;
+        height: 200px;
+        background-color: white;
+        box-shadow: var(--shadow);
+        border-radius: 20px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: var(--unit);
+        padding: 20px;
+
+        h1{
+            font-size: 40px;
+        }
+    }
+}

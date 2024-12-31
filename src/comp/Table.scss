@@ -1,0 +1,15 @@
+.table-cont{
+    width: calc(100% - 300px);
+    margin-left: 300px;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    .table{
+        width: 80%;
+        background-color: var(--white);
+        box-shadow: var(--shadow)
+    }
+}

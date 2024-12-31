@@ -1,0 +1,149 @@
+import React, { useEffect, useState } from "react";
+import "./Blog.scss";
+import axios from "axios";
+import { useLocation, useSearchParams } from "react-router-dom";
+const Addblog = () => {
+  const [blogForm, setBlogForm] = useState({
+    date: "",
+    category: "",
+    title: "",
+    description: "",
+  });
+  const [imageData, setDataImage] = useState(null);
+
+  const getBlogById = async (id) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_PORT_BACKEND}blog/getBlogById/${id}`
+      );
+
+      const data = response.data.response[0];
+
+      console.log(data);
+
+      setBlogForm({
+        date: data.date,
+        category: data.category,
+        title: data.title,
+        description: data.description,
+      });
+
+      setDataImage(data.image);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const [searchParams] = useSearchParams(); // Destructure to get URLSearchParams
+  const location = useLocation();
+  useEffect(() => {
+    const id = searchParams.get("id");
+
+    if (id) {
+      getBlogById(id);
+    }
+  }, [location, searchParams]);
+
+  const addBlog = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("image", imageData);
+      formData.append("blog", JSON.stringify(blogForm));
+
+      const id = searchParams.get("id");
+
+      let response;
+      if (id) {
+        response = await axios.put(
+          `${process.env.REACT_APP_PORT_BACKEND}blog/updateBlog/${id}`,
+          formData
+        );
+      } else {
+        response = await axios.post(
+          `${process.env.REACT_APP_PORT_BACKEND}blog/addBlog`,
+          formData
+        );
+      }
+
+      console.log(response);
+
+      setBlogForm({
+        date: "",
+        category: "",
+        title: "",
+        description: "",
+      });
+
+      setDataImage(null);
+      window.reload();
+      alert("blog has been added");
+
+       
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  return (
+    <>
+      <div class="add_blog parent">
+        <div class="add_blog_form">
+          <form action="" onSubmit={addBlog}>
+            <div class="form_row">
+              <label for=""> Select Image </label>
+              <input
+                type="file"
+                onChange={(e) => setDataImage(e.target.files[0])}
+              />
+            </div>
+            <div class="form_row">
+              <label for=""> Select Date </label>
+              <input
+                type="date"
+                value={blogForm.date}
+                onChange={(e) => {
+                  setBlogForm({ ...blogForm, date: e.target.value });
+                }}
+              />
+            </div>
+            <div class="form_row">
+              <label for=""> Category </label>
+              <input
+                type="text"
+                value={blogForm.category}
+                onChange={(e) => {
+                  setBlogForm({ ...blogForm, category: e.target.value });
+                }}
+              />
+            </div>
+            <div class="form_row">
+              <label for=""> title</label>
+              <input
+                type="text"
+                value={blogForm.title}
+                onChange={(e) => {
+                  setBlogForm({ ...blogForm, title: e.target.value });
+                }}
+              />
+            </div>
+            <div class="form_row">
+              <label for=""> description</label>
+              <textarea
+                type="text"
+                value={blogForm.description}
+                onChange={(e) => {
+                  setBlogForm({ ...blogForm, description: e.target.value });
+                }}
+              />
+            </div>
+            <div class="form_row">
+              <input className="btn" type="submit" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Addblog;
