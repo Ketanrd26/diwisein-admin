@@ -64,7 +64,7 @@ const Blog = () => {
       render: (_, record) => (
         <div class="image" style={{ width: "200px" }}>
           <img
-            src={`http://62.72.56.158/images/diwiseblog/${record.image}`}
+            src={record.image}
             alt=""
             style={{ width: "100%", aspectRatio: 1 }}
           />
