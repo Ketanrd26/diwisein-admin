@@ -30,7 +30,9 @@ const Blog = () => {
 
       setBlogsData((prevData) => prevData.filter((item) => item.id !== id));
       alert("blog has been deleted");
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const location = useLocation();
@@ -64,7 +66,7 @@ const Blog = () => {
       render: (_, record) => (
         <div class="image" style={{ width: "200px" }}>
           <img
-            src={record.image}
+            src={`https://images.diwise.in/diwiseblog/${record.image}`}
             alt=""
             style={{ width: "100%", aspectRatio: 1 }}
           />
