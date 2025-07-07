@@ -17,27 +17,30 @@ function App() {
       setUsername(localStorage.getItem("username"));
     };
 
-    
     window.addEventListener("storage", handleStorageChange);
 
-   
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("username"); 
-    setUsername(null); 
-  }
+    localStorage.removeItem("username");
+    setUsername(null);
+  };
   return (
     <div className="App">
       <ContextProvider>
         <BrowserRouter>
-          {username && <Sidebar handleLogout={handleLogout} />}
+          {/* {username && <Sidebar handleLogout={handleLogout} />} */}
+         <Sidebar handleLogout={handleLogout} />
 
           <Routes>
-            {username ? (
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/contactlist" element={<ContactList />} />
+            <Route path="/bloglist" element={<Blog />} />
+            <Route path="/addBlog" element={<Addblog />} />
+            {/* {username ? (
               <>
                 {" "}
                 <Route path="/" element={<Dashboard />} />
@@ -47,7 +50,7 @@ function App() {
               </>
             ) : (
               <Route path="*" element={<Login setUsername={setUsername} />} />
-            )}
+            )} */}
           </Routes>
         </BrowserRouter>
       </ContextProvider>

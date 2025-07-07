@@ -3,6 +3,9 @@ import "./Blog.scss";
 import DOMPurify from "dompurify";
 import axios from "axios";
 import { useLocation, useSearchParams } from "react-router-dom";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
 const Addblog = () => {
   const [blogForm, setBlogForm] = useState({
     date: "",
@@ -24,7 +27,7 @@ const Addblog = () => {
       "li",
       "ol",
       "br",
-      "iframe"
+      "iframe",
     ],
     ALLOWED_ATTR: ["href", "src", "alt", "title", "target", "style"],
   };
@@ -40,8 +43,6 @@ const Addblog = () => {
       );
 
       const data = response.data.response[0];
-
-      console.log(data);
 
       setBlogForm({
         date: data.date,
@@ -86,9 +87,7 @@ const Addblog = () => {
           formData
         );
       }
-
-      console.log(response);
-
+      
       setBlogForm({
         date: "",
         category: "",
@@ -148,13 +147,31 @@ const Addblog = () => {
             </div>
             <div class="form_row">
               <label for=""> description</label>
-              <textarea
+              {/* <textarea
                 type="text"
                 value={blogForm.description}
                 onChange={(e) => {
                   setBlogForm({ ...blogForm, description: e.target.value });
                 }}
-              />
+              /> */}
+
+              <div style={{ width: "100%" }}>
+                <CKEditor
+                  editor={ClassicEditor}
+                  onChange={(event, editor) => {
+                    const data = editor.getData();
+                  }}
+                  onReady={(editor) => {
+                    editor.editing.view.change((writer) => {
+                      writer.setStyle(
+                        "min-height",
+                        "200px",
+                        editor.editing.view.document.getRoot()
+                      );
+                    });
+                  }}
+                />
+              </div>
             </div>
             <div class="form_row">
               <label>Preview:</label>
@@ -170,7 +187,6 @@ const Addblog = () => {
           </form>
         </div>
       </div>
-
     </>
   );
 };

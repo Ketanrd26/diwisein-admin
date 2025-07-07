@@ -1,14 +1,15 @@
 import React from "react";
 import "./Sidebar.scss";
-import { Link, useNavigate } from "react-router-dom";
-const Sidebar = ({handleLogout}) => {
+import { Link } from "react-router-dom";
+import logo from "../assets/Akka_logo.png";
+const Sidebar = ({ handleLogout }) => {
   const links = [
     {
       link_name: "Dashboard",
       link_path: "/",
     },
     {
-      link_name: "Contact list",
+      link_name: "Contacts list",
       link_path: "/contactlist",
     },
     {
@@ -17,15 +18,11 @@ const Sidebar = ({handleLogout}) => {
     },
   ];
 
- 
   return (
     <>
       <div class="sidebar">
         <div class="list">
-          <img
-            src="https://diwise.uk/static/media/logoblack.eb65a1ea49fdc4881dd5.svg"
-            alt=""
-          />
+          <img src={logo} alt="Akka Foundation" />
 
           <div class="links">
             {links.map((item, index) => (
